@@ -7,4 +7,5 @@ const petRouter = require(__dirname + '/routes/petRouter.js');
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/pet_db');
 
 app.use('/api', petRouter);
+
 app.listen(PORT, () => console.log('server up at: ' + PORT));

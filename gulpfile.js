@@ -17,3 +17,32 @@ gulp.task('lint:client', () => {
   .pipe(eslint('./app/.eslintrc'))
   .pipe(eslint.format());
 });
+
+gulp.task('webpack:dev', () => {
+  gulp.src('./app/*.js')
+  .pipe(webpack({
+    entry: './app/entry.js',
+    output: {
+      filename: 'bundle.js'
+    },
+    module: {
+      loaders: [{
+        loader: 'babel',
+        query: {
+          presets: ['react']
+        }
+      }]
+    }
+  }))
+  .pipe(gulp.dest('./build'));
+});
+
+gulp.task('static', () => {
+  gulp.src('app/*.html')
+    .pipe(gulp.dest('./build'));
+  gulp.src('app/*.css')
+    .pipe(gulp.dest('./build'));
+});
+
+gulp.task('lint', ['lint:server', 'lint:client']);
+gulp.task('default', ['webpack:dev', 'static']);
