@@ -63,18 +63,20 @@ var CreateNewPet = React.createClass({
     this.setState({favoriteActivity: e.target.value});
   },
   doSomething: function(e) {
-    console.log('submit works');
     e.preventDefault();
+    console.log('submit works');
+    var newPet
+
   },
   render: function() {
     return (
       <form onSubmit={this.doSomething}>
       <label for="name">Name</label>
-      <input type="text" name="name"/>
-      <label name="nickName">nickName</label>
-      <input type="text" name="nickName"/>
+      <input type="text" name="name" onChange={this.nameInput}/>
+      <label name="nickName" >nickName</label>
+      <input type="text" name="nickName" onChange={this.nickNameInput}/>
       <label for="favoriteActivity">favoriteActivity</label>
-      <input type="text" name="favoriteActivity"/>
+      <input type="text" name="favoriteActivity" onChange={this.favoriteActivityInput}/>
       <button type="submit">Create a Pet</button>
       </form>
     );
