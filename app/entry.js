@@ -49,6 +49,22 @@ var App = React.createClass({
   }
 })
 
+var CreateNewPet = React.createClass({
+  render: function() {
+    return (
+      <form>
+      <label for="name">Name</label>
+      <input type="text" name="name"/>
+      <label name="nickName">nickName</label>
+      <input type="text" name="nickName"/>
+      <label for="favoriteActivity">favoriteActivity</label>
+      <input type="text" name="favoriteActivity"/>
+      <button type="submit">Create a Pet</button>
+      </form>
+    );
+  }
+});
 
 
+ReactDom.render(<CreateNewPet></CreateNewPet>, document.getElementById('form'));
 ReactDom.render(<App></App>, document.getElementById('app'));
