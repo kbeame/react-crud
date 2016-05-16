@@ -50,9 +50,25 @@ var App = React.createClass({
 })
 
 var CreateNewPet = React.createClass({
+  getInitialState: function() {
+    return({name: '', nickName: '', favoriteActivity: ''});
+  },
+  nameInput: function(e) {
+    this.setState({name: e.target.value});
+  },
+  nickNameInput: function(e) {
+    this.setState({nickName: e.target.value});
+  },
+  favoriteActivityInput: function(e) {
+    this.setState({favoriteActivity: e.target.value});
+  },
+  doSomething: function(e) {
+    console.log('submit works');
+    e.preventDefault();
+  },
   render: function() {
     return (
-      <form>
+      <form onSubmit={this.doSomething}>
       <label for="name">Name</label>
       <input type="text" name="name"/>
       <label name="nickName">nickName</label>
