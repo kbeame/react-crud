@@ -1,5 +1,7 @@
 const React = require('react');
 const ReactDom = require('react-dom');
+// const fetch = require('whatwg-fetch');
+const $ = require('jquery');
 
 var pets = [
     {
@@ -17,9 +19,9 @@ var pets = [
         "nickName": "toot"
     }
 ]
-var LoadPets = React.createClass({
-  getInitialState
-})
+// var LoadPets = React.createClass({
+//   getInitialState
+// })
 
 var List = React.createClass({
   render: function () {
@@ -34,8 +36,22 @@ var List = React.createClass({
 var App = React.createClass({
   getInitialState: function () {
     return {
-      pets: pets
+      pets: []
     }
+  },
+
+  componentWillMount: function () {
+    $.ajax({
+      url: 'http://localhost:5555/api/pet',
+      type: 'GET',
+      success: function(pets) {
+        this.setState({ pets: pets })
+        console.log(pets);
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.log(status, err.toString());
+      }.bind(this)
+    });
   },
 
   render: function() {

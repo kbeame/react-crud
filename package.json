@@ -16,15 +16,19 @@
     "babel-loader": "^6.2.4",
     "babel-preset-react": "^6.5.0",
     "body-parser": "^1.15.1",
+    "es6-promise": "^3.2.1",
+    "fetch": "^1.0.1",
     "gulp": "^3.9.1",
     "gulp-eslint": "^2.0.0",
+    "jquery": "^2.2.3",
     "mongoose": "^4.4.17",
     "react": "^15.0.2",
     "react-dom": "^15.0.2",
     "react-router": "^2.4.0",
     "webpack": "^1.13.0",
     "webpack-dev-server": "^1.14.1",
-    "webpack-stream": "^3.2.0"
+    "webpack-stream": "^3.2.0",
+    "whatwg-fetch": "^1.0.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
