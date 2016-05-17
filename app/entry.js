@@ -7,7 +7,7 @@ var List = React.createClass({
   render: function () {
     return (
       <li>
-        Name: {this.props.name} nickName: {this.props.nickName} favoriteActivity: {this.props.favoriteActivity}
+      (id: {this.props._id})  Name: {this.props.name} nickName: {this.props.nickName} favoriteActivity: {this.props.favoriteActivity}
       </li>
     )
   }
@@ -20,7 +20,11 @@ var App = React.createClass({
     }
   },
 
-  componentWillMount: function () {
+  componentDidMount: function() {
+    this.loadPetsFromServer();
+  },
+
+  loadPetsFromServer: function () {
     $.ajax({
       url: 'http://localhost:5555/api/pet',
       type: 'GET',
@@ -33,18 +37,37 @@ var App = React.createClass({
       }.bind(this)
     });
   },
-
+  handlePetSubmit: function(pets) {
+    $.ajax({
+      url: 'http://localhost:5555/api/pet',
+      type: 'POST',
+      success: function(pets) {
+        this.setState({ pets: pets })
+        console.log(pets);
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.log(status, err.toString());
+      }.bind(this)
+    });
+    this.loadPetsFromServer();
+  },
   render: function() {
     return (
+      <section>
       <ul>
         {this.state.pets.map(function (pet) {
           return (
-            <List name={pet.name} nickName={pet.nickName}
+            <List _id= {pet._id} name={pet.name} nickName={pet.nickName}
               favoriteActivity={pet.favoriteActivity}>
             </List>
           )
         })}
       </ul>
+      <h2>
+      Create Pet
+      </h2>
+      <CreateNewPet onPetSubmit={ this.handlePetSubmit } />
+      </section>
     )
   }
 })
@@ -62,27 +85,31 @@ var CreateNewPet = React.createClass({
   favoriteActivityInput: function(e) {
     this.setState({favoriteActivity: e.target.value});
   },
-  doSomething: function(e) {
+  handleSubmit: function(e) {
     e.preventDefault();
+    var name = this.state.name.trim();
+    var nickName = this.state.nickName.trim();
+    var favoriteActivity = this.state.favoriteActivity.trim();
+    if (!name || !nickName || !favoriteActivity) {
+      return;
+    }
     console.log('submit works');
-    var newPet
-
+    this.props.onPetSubmit=({name: name, nickName: nickName, favoriteActivity: favoriteActivity});
+    this.setState({name: '', nickName: '', favoriteActivity: ''});
   },
   render: function() {
     return (
-      <form onSubmit={this.doSomething}>
+      <form onSubmit={this.handleSubmit}>
       <label for="name">Name</label>
-      <input type="text" name="name" onChange={this.nameInput}/>
+      <input type="text" name="name" value={this.state.name} onChange={this.nameInput}/>
       <label name="nickName" >nickName</label>
-      <input type="text" name="nickName" onChange={this.nickNameInput}/>
+      <input type="text" name="nickName" value={this.state.nickName} onChange={this.nickNameInput}/>
       <label for="favoriteActivity">favoriteActivity</label>
-      <input type="text" name="favoriteActivity" onChange={this.favoriteActivityInput}/>
-      <button type="submit">Create a Pet</button>
+      <input type="text" name="favoriteActivity" value={this.state.favoriteActivity} onChange={this.favoriteActivityInput}/>
+      <button value="Post" type="submit">Create a Pet</button>
       </form>
     );
   }
 });
 
-
-ReactDom.render(<CreateNewPet></CreateNewPet>, document.getElementById('form'));
 ReactDom.render(<App></App>, document.getElementById('app'));
