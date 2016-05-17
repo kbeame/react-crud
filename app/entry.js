@@ -4,36 +4,36 @@ const $ = require('jquery');
 const superagent = require('superagent');
 
 var List = React.createClass({
-  render: function () {
+  render: function() {
     return (
       <li>
-      (id: {this.props._id})  Name: {this.props.name} nickName: {this.props.nickName} favoriteActivity: {this.props.favoriteActivity}
+      (id: { this.props._id })  Name: { this.props.name } nickName: { this.props.nickName } favoriteActivity: { this.props.favoriteActivity }
       </li>
-    )
+    );
   }
-})
+});
 
 var App = React.createClass({
-  getInitialState: function () {
+  getInitialState: function() {
     return {
       pets: []
-    }
+    };
   },
 
   componentDidMount: function() {
     this.loadPetsFromServer();
   },
 
-  loadPetsFromServer: function () {
+  loadPetsFromServer: function() {
     $.ajax({
       url: 'http://localhost:5555/api/pet',
       type: 'GET',
       success: function(pets) {
-        this.setState({ pets: pets })
+        this.setState({ pets: pets });
       }.bind(this),
       error: function(xhr, status, err) {
         console.log(status, err.toString());
-      }.bind(this)
+      }
     });
   },
   handlePetSubmit: function(pets) {
@@ -41,21 +41,22 @@ var App = React.createClass({
     superagent
     .post('http://localhost:5555/api/pet')
     .send(pets)
-    .end(function(err, res){
+    .end((err) => {
       console.log(err);
       this.loadPetsFromServer();
-    }.bind(this)
-  )},
+    }
+  );
+  },
   render: function() {
     return (
       <section>
       <ul>
-        {this.state.pets.map(function (pet) {
+        { this.state.pets.map((pet) => {
           return (
             <List _id= {pet._id} name={pet.name} nickName={pet.nickName}
               favoriteActivity={pet.favoriteActivity}>
             </List>
-          )
+          );
         })}
       </ul>
       <h2>
@@ -63,22 +64,22 @@ var App = React.createClass({
       </h2>
       <CreateNewPet onPetSubmit={ this.handlePetSubmit } />
       </section>
-    )
+    );
   }
-})
+});
 
 var CreateNewPet = React.createClass({
   getInitialState: function() {
-    return({name: '', nickName: '', favoriteActivity: ''});
+    return ({ name: '', nickName: '', favoriteActivity: '' });
   },
   nameInput: function(e) {
-    this.setState({name: e.target.value});
+    this.setState({ name: e.target.value });
   },
   nickNameInput: function(e) {
-    this.setState({nickName: e.target.value});
+    this.setState({ nickName: e.target.value });
   },
   favoriteActivityInput: function(e) {
-    this.setState({favoriteActivity: e.target.value});
+    this.setState({ favoriteActivity: e.target.value });
   },
   handleSubmit: function(e) {
     e.preventDefault();
@@ -88,8 +89,8 @@ var CreateNewPet = React.createClass({
     if (!name || !nickName || !favoriteActivity) {
       return;
     }
-    this.props.onPetSubmit({name: name, nickName: nickName, favoriteActivity: favoriteActivity});
-    this.setState({name: '', nickName: '', favoriteActivity: ''});
+    this.props.onPetSubmit({ name: name, nickName: nickName, favoriteActivity: favoriteActivity });
+    this.setState({ name: '', nickName: '', favoriteActivity: '' });
   },
   render: function() {
     return (
@@ -99,7 +100,8 @@ var CreateNewPet = React.createClass({
       <label name="nickName" >nickName</label>
       <input type="text" name="nickName" value={this.state.nickName} onChange={this.nickNameInput}/>
       <label for="favoriteActivity">favoriteActivity</label>
-      <input type="text" name="favoriteActivity" value={this.state.favoriteActivity} onChange={this.favoriteActivityInput}/>
+      <input type="text" name="favoriteActivity" value={ this.state.favoriteActivity }
+      onChange={ this.favoriteActivityInput }/>
       <button type="submit">Create a Pet</button>
       </form>
     );
