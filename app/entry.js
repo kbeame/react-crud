@@ -1,7 +1,7 @@
 const React = require('react');
 const ReactDom = require('react-dom');
 const $ = require('jquery');
-
+const superagent = require('superagent');
 
 var List = React.createClass({
   render: function () {
@@ -30,7 +30,6 @@ var App = React.createClass({
       type: 'GET',
       success: function(pets) {
         this.setState({ pets: pets })
-        console.log(pets);
       }.bind(this),
       error: function(xhr, status, err) {
         console.log(status, err.toString());
@@ -38,19 +37,15 @@ var App = React.createClass({
     });
   },
   handlePetSubmit: function(pets) {
-    $.ajax({
-      url: 'http://localhost:5555/api/pet',
-      type: 'POST',
-      success: function(pets) {
-        this.setState({ pets: pets })
-        console.log(pets);
-      }.bind(this),
-      error: function(xhr, status, err) {
-        console.log(status, err.toString());
-      }.bind(this)
-    });
-    this.loadPetsFromServer();
-  },
+    console.log(pets);
+    superagent
+    .post('http://localhost:5555/api/pet')
+    .send(pets)
+    .end(function(err, res){
+      console.log(err);
+      this.loadPetsFromServer();
+    }.bind(this)
+  )},
   render: function() {
     return (
       <section>
@@ -93,8 +88,7 @@ var CreateNewPet = React.createClass({
     if (!name || !nickName || !favoriteActivity) {
       return;
     }
-    console.log('submit works');
-    this.props.onPetSubmit=({name: name, nickName: nickName, favoriteActivity: favoriteActivity});
+    this.props.onPetSubmit({name: name, nickName: nickName, favoriteActivity: favoriteActivity});
     this.setState({name: '', nickName: '', favoriteActivity: ''});
   },
   render: function() {
@@ -106,7 +100,7 @@ var CreateNewPet = React.createClass({
       <input type="text" name="nickName" value={this.state.nickName} onChange={this.nickNameInput}/>
       <label for="favoriteActivity">favoriteActivity</label>
       <input type="text" name="favoriteActivity" value={this.state.favoriteActivity} onChange={this.favoriteActivityInput}/>
-      <button value="Post" type="submit">Create a Pet</button>
+      <button type="submit">Create a Pet</button>
       </form>
     );
   }
