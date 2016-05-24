@@ -71,6 +71,7 @@ var App = React.createClass({
           return (
             <List _id= {pet._id} name={pet.name} nickName={pet.nickName}
               favoriteActivity={pet.favoriteActivity}
+              loadPetsFromServer = {this.loadPetsFromServer}
               >
             </List>
           );
