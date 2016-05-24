@@ -4,14 +4,30 @@ const $ = require('jquery');
 const superagent = require('superagent');
 
 var List = React.createClass({
+  handleDeleteClick: function(e) {
+    e.preventDefault();
+    this.handlePetDelete();
+  },
+  handlePetDelete: function() {
+    console.log(this.props._id);
+    superagent
+    .delete('http://localhost:5555/api/pet/' + this.props._id)
+    .end((err) => {
+      console.log(err);
+      this.props.loadPetsFromServer();
+    }
+  );
+  },
   render: function() {
     return (
       <li>
       (id: { this.props._id })  Name: { this.props.name } nickName: { this.props.nickName } favoriteActivity: { this.props.favoriteActivity }
+      <button onClick={ this.handlePetDelete } type="submit">Delete a Pet</button>
       </li>
     );
   }
 });
+
 
 var App = React.createClass({
   getInitialState: function() {
@@ -54,7 +70,8 @@ var App = React.createClass({
         { this.state.pets.map((pet) => {
           return (
             <List _id= {pet._id} name={pet.name} nickName={pet.nickName}
-              favoriteActivity={pet.favoriteActivity}>
+              favoriteActivity={pet.favoriteActivity}
+              >
             </List>
           );
         })}

@@ -1,11 +1,11 @@
 # react-crud
 # The Difference Between React and Angular:
-The biggest Difference that I have found between React and Angular (aside from Angular having
+The biggest difference that I have found between React and Angular (aside from Angular having
 two way data binding) is that in Angular you must have a lot more content within your HTML file that allows
 for the custom elements that you create to display in the DOM. While Angular lazy loads, React only
-loads the content that has changed, meaning that on a change it doesn't need to re-load the enture page.
-In React you write out HTML elements in the javascript file and render that my pinpointing the DOM that you
-want them to display within. There is less content from create directly written in the HTML file.
+loads the content that has changed, meaning that on a change it doesn't need to re-load the entire page.
+In React you write out HTML elements in the javascript file and render that by pinpointing the DOM that you
+want them to display within.
 
 # How to populate database (while POST isn't working):
 Clone down the master branch to your local machine.
@@ -24,9 +24,6 @@ http :5555/api/pet name=ringo nickName=star
 ```
 
 In browser go to http://localhost:5000/ so view my client side app.
-
-### How to lint
-
 
 ## Resources Used:
 ### Most Useful:
